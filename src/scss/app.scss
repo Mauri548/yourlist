@@ -1,0 +1,24 @@
+@import 'variable';
+@import 'color';
+@import 'structure';
+@import 'padding';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: $font-family, sans-serif;
+}
+
+body {
+    background-color: $grey-ligth;
+    color: $black
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
