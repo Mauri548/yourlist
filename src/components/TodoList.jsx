@@ -6,7 +6,12 @@ function TodoList({list, toggleShow, deleteItemToList}) {
         <div className="row conteiner-item px-0">
             <ul className="w-100">
                 {list.map((item) => (
-                    <TodoItem key={item.id} item={item} toggleShow={toggleShow} deleteItemToList={deleteItemToList} />
+                    <TodoItem 
+                        key={item.id} 
+                        item={item} 
+                        toggleShow={toggleShow} 
+                        deleteItemToList={deleteItemToList} 
+                    />
                 ))}
             </ul>
         </div>
