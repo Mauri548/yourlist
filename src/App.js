@@ -13,6 +13,8 @@ function App() {
     {id: 1, name: "One Piece", show: false }
   ])
 
+  const [listAux, setListAux] = useState([])
+
   const itemRef = useRef()
 
   useEffect(() => {
@@ -24,7 +26,13 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem(KEY, JSON.stringify(list))
+    initListAux()
+    console.log(listAux)
   }, [list])
+
+  const initListAux = () => {
+    setListAux([...list])
+  }
 
   const addItemToList = (e) => {
     e.preventDefault()
@@ -53,13 +61,26 @@ function App() {
     setList(newLists)
   }
 
+  const searchItems = (query) => {
+    if (query == '') {
+      setListAux([...list])
+      return
+    }
+
+    const temp = [...list]
+    let res = []
+
+    res = temp.filter(item => item.name.toLowerCase().includes(query))
+    setListAux(res)
+  }
+
   return (
     <div className="App">
-      <Navbar/>
+      <Navbar searchItems={searchItems} />
 
       <AddToList addItemToList={addItemToList} itemRef={itemRef} />
 
-      <TodoList list={list} toggleShow={toggleShow} deleteItemToList={deleteItemToList} />      
+      <TodoList list={listAux} toggleShow={toggleShow} deleteItemToList={deleteItemToList} />      
     </div>
   );
 }
