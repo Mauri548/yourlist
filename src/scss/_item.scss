@@ -1,0 +1,25 @@
+@import 'variable';
+
+.conteiner-item {
+    width: 95%;
+    margin: auto;
+}
+
+.item {
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 1px 3px 5px rgb(0 0 0 / 20%);
+    background-color: $white;
+    display: flex;
+    justify-content: space-between;
+    animation: aparicion 0.4s ease;
+
+    @keyframes aparicion {
+        0% {scale: 0.6; opacity: 0;}
+        100% {scale: 1; opacity: 1;}
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}

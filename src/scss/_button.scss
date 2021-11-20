@@ -1,0 +1,20 @@
+@import 'variable';
+
+.btn {
+    padding: calc($padding * 2);
+    border: 0;
+}
+
+.btn-secondary {
+    background: $secondary;
+    color: $white;
+    font-weight: bold;
+    border-radius: 0 6px 6px 0;
+    border: 1px solid $secondary;
+
+    &:hover {
+      background: #43c559; 
+      cursor: pointer;
+      border: 1px solid #43c559;
+    }
+}
