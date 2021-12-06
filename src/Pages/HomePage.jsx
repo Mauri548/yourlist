@@ -7,9 +7,7 @@ import { v4 as uuid } from 'uuid';
 const KEY = 'listApp.list'
 
 const HomePage = () => {
-    const [list, setList] = useState([
-        {id: 1, name: "One Piece", show: false }
-    ])
+    const [list, setList] = useState([])
     
     const [listAux, setListAux] = useState([])
     

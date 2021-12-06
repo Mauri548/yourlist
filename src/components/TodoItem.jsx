@@ -13,7 +13,7 @@ function TodoItem({item, toggleShow, deleteItemToList}) {
 
     return (
         <li>
-            <div className="row p-0 px-0">
+            <div data-testid="item-conteiner" className="row p-0 px-0">
                 <div className="col p-0 w-100 item" >
                     <div className="col w-100" onClick={onClick}>
                         <span className={`pl-1 ${show? 'checked': ''}`} >

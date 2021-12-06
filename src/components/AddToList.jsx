@@ -4,8 +4,8 @@ function AddToList({addItemToList, itemRef}) {
     return(
         <div className="row justify-center">
             <div className="col">
-                <form onSubmit={addItemToList}>
-                    <input ref={itemRef} className="input input-add-list" type="text" placeholder="exmple" />
+                <form data-testid="form-add-list" onSubmit={addItemToList}>
+                    <input ref={itemRef} className="input input-add-list" type="text" placeholder="Add a new anime..." />
                     <button onClick={addItemToList} className="btn btn-secondary">
                         Add
                     </button>
