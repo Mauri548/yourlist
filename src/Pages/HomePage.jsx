@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import AddToList from "../components/AddToList";
 import TodoList from "../components/TodoList";
 import WebsiteLayout from "../Layout/WebsiteLayout";
-import { v4 as uuid } from 'uuid';
+// import { v4 as uuid } from 'uuid';
+require('dotenv').config()
 
 const KEY = 'listApp.list'
 
@@ -12,18 +13,60 @@ const HomePage = () => {
     const [listAux, setListAux] = useState([])
     
     const itemRef = useRef()
-    
-    useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem(KEY))
-        if (stored) {
-            setList(stored)
+    const endpoint = process.env.REACT_APP_URL_BACKEND
+
+    const fecthNote = async () => {
+        const response = await fetch(`${endpoint}/notes`).then(res => res.json())
+        setList(response)
+    }
+
+    const fetchAddNote = async (note) => {
+        const response = await fetch(`${endpoint}/notes`, {
+            method: 'POST',
+            body: JSON.stringify(note),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        if (!response.error) {
+            fecthNote()
         }
+    }
+
+    const fetchDeleteNote = async (id) => {
+        const response = await fetch(`${endpoint}/notes/${id}`, {
+            method: 'DELETE',
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        console.log(response)
+        return response.status === 204 ? true : false
+    }
+
+    const fechCangeNote = async (id, note) => {
+        const response = await fetch(`${endpoint}/notes/${id}`, {
+            method: 'POST',
+            body: JSON.stringify(note),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        return response.status === 200 ? true : false
+    }
+
+    useEffect(() => {
+        // const stored = JSON.parse(localStorage.getItem(KEY))
+        // if (stored) {
+        //     setList(stored)
+        // }
+        fecthNote()
     },[])
     
     useEffect(() => {
         localStorage.setItem(KEY, JSON.stringify(list))
         initListAux()
-        console.log(listAux)
     }, [list])
     
     const initListAux = () => {
@@ -33,32 +76,42 @@ const HomePage = () => {
     const addItemToList = (e) => {
         e.preventDefault()
         const item = itemRef.current.value
-        if (item == '') return
+        if (item === '') return
     
-        setList((prevList) => {
-            return [... prevList, { id: uuid(), name: item, show: false}]
-        })
+        const note = {
+            name: item, 
+            show: false
+        }
+        fetchAddNote(note)
     
         itemRef.current.value = null
     }
     
-    const deleteItemToList = (item) => {
-        let newList = [...list]
-        let index = newList.indexOf(item)
-        newList.splice(index,1)
-        console.log(newList)
-        setList(newList)
+    const deleteItemToList = async (item) => {
+        
+        let res = await fetchDeleteNote(item.id)
+        console.log(res)
+        if (res) {
+            let newList = [...list]
+            let index = newList.indexOf(item)
+            newList.splice(index,1)
+            setList(newList)
+        }
     }
     
-    const toggleShow = (id) => {
+    const toggleShow = async (id) => {
         const newLists = [...list]
-        const item = newLists.find(item => item.id == id)
-        item.show = !item.show
-        setList(newLists)
+        const item = newLists.find(item => item.id === id)
+        let data = { show: !item.show }
+        let res = await fechCangeNote(item.id, data)
+        if (res) {
+            item.show = !item.show
+            setList(newLists)
+        }
     }
     
     const searchItems = (query) => {
-        if (query == '') {
+        if (query === '') {
             setListAux([...list])
             return
         }
